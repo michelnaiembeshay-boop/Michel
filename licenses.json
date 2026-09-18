@@ -1,0 +1,8 @@
+{
+  "enabled": true,
+  "codes": {
+    "MICHEL-OWNER": { "active": true, "name": "ميشيل" },
+    "MICHEL-001": { "active": true, "name": "عميل 1" },
+    "MICHEL-002": { "active": false, "name": "عميل 2" }
+  }
+}
