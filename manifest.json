@@ -1,0 +1,10 @@
+{
+  "name": "Michel",
+  "short_name": "Michel",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07080c",
+  "theme_color": "#e8b44c",
+  "lang": "ar",
+  "dir": "rtl"
+}

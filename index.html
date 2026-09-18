@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Michel" />
+  <title>Michel</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <section id="login-screen">
+    <form class="login-card" id="login-form">
+      <div class="brand">
+        <div class="brand-badge">M</div>
+        <h1>Michel</h1>
+        <p>Xtream أو قائمة M3U</p>
+      </div>
+      <div class="mode-tabs">
+        <button type="button" class="mode on" data-mode="xtream" id="mode-xtream">Xtream</button>
+        <button type="button" class="mode" data-mode="m3u" id="mode-m3u">M3U</button>
+      </div>
+      <div id="box-xtream">
+        <label>رابط السيرفر</label>
+        <input class="field ltr" id="server" placeholder="http://server:port" dir="ltr" />
+        <label>اسم المستخدم</label>
+        <input class="field" id="username" />
+        <label>كلمة المرور</label>
+        <input class="field" id="password" type="password" />
+      </div>
+      <div id="box-m3u" class="hidden">
+        <label>رابط ملف M3U</label>
+        <input class="field ltr" id="m3u" placeholder="http://host:port/get.php?username=USER&password=PASS&type=m3u_plus&output=ts" dir="ltr" inputmode="url" />
+        <p class="muted">الرابط لازم يبدأ بـ http:// أو https:// بالكامل</p>
+      </div>
+      <button class="btn btn-gold" id="login-btn" type="submit">دخول</button>
+      <div id="login-error" class="error hidden"></div>
+      <p id="boot-msg" class="muted hidden">جاري الدخول تلقائي...</p>
+    </form>
+  </section>
+
+  <section id="app-screen" class="hidden">
+    <header class="topbar">
+      <button class="back-btn" id="back-btn" type="button">رجوع</button>
+      <div class="top-title">
+        <h2 id="page-title">الرئيسية</h2>
+        <p id="page-sub"></p>
+      </div>
+      <div class="search hidden" id="search-wrap">
+        <input class="field" id="search" placeholder="بحث..." />
+      </div>
+      <button class="icon-btn" id="logout-btn" type="button">خروج</button>
+    </header>
+    <main class="page" id="page"></main>
+  </section>
+
+  <div id="player-modal" class="hidden">
+    <video id="video" autoplay playsinline webkit-playsinline x-webkit-airplay="allow"></video>
+    <div id="toolbar" class="toolbar hidden">
+      <div class="tb-row">
+        <button class="back-btn" id="tb-back" type="button">رجوع</button>
+        <button class="icon-btn" id="tb-rew30" type="button">-٣٠</button>
+        <button class="icon-btn" id="tb-rew" type="button">ترجيع</button>
+        <button class="icon-btn onbar" id="tb-play" type="button">إيقاف</button>
+        <button class="icon-btn" id="tb-fwd" type="button">تقديم</button>
+        <button class="icon-btn" id="tb-fwd30" type="button">+٣٠</button>
+        <h2 id="tb-title">تشغيل</h2>
+        <button class="icon-btn" id="tb-prev" type="button">السابق</button>
+        <button class="icon-btn" id="tb-next" type="button">التالي</button>
+        <button class="icon-btn" id="tb-list" type="button">القائمة</button>
+        <button class="icon-btn" id="tb-cc" type="button"><span id="tb-cc-lab">ترجمة</span></button>
+      </div>
+      <div class="seek-row" id="seek-wrap">
+        <span id="tcur">00:00</span>
+        <input id="seek" type="range" min="0" max="1000" value="0" />
+        <span id="tdur">00:00</span>
+      </div>
+    </div>
+    <div id="player-ui" class="player-ui hidden">
+      <div class="player-head">
+        <button class="back-btn" id="close-player" type="button">رجوع</button>
+        <button class="icon-btn" id="prev-btn" type="button">السابق</button>
+        <h2 id="player-title">تشغيل</h2>
+        <button class="icon-btn" id="next-btn" type="button">التالي</button>
+      </div>
+      <div class="player-body">
+        <aside class="cat-pane" id="cat-pane"></aside>
+        <section class="ch-pane" id="ch-pane"></section>
+      </div>
+      <div class="player-foot"><div class="epg" id="epg-line"></div><p class="hint">دوس على الشاشة لإظهار أو إخفاء الأقسام</p></div>
+    </div>
+  </div>
+
+  <div id="sheet" class="sheet hidden">
+    <div class="sheet-card">
+      <button class="back-btn" id="sheet-close" type="button">رجوع</button>
+      <div id="sheet-body"></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
