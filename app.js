@@ -127,7 +127,8 @@ async function rawGetWeb(url) {
     return text;
   };
   const local = location.protocol === "file:" || location.hostname === "127.0.0.1" || location.hostname === "localhost";
-  if (local || location.port === "8787") {
+  const hosted = location.protocol !== "file:" && !/github\.io$/i.test(location.hostname || "");
+  if (local || location.port === "8787" || hosted) {
     try {
       if (url.indexOf("player_api.php") !== -1) {
         const src = new URL(url);
@@ -170,11 +171,24 @@ async function api(action, extra) {
   const text = await rawGetRetry(xtreamApi(action, extra));
   try { return JSON.parse(text); } catch (e) { throw new Error("السيرفر رجّع بيانات غير صحيحة"); }
 }
+function hostedProxy() {
+  try {
+    return typeof location !== "undefined" && location.protocol !== "file:" && !/github\.io$/i.test(location.hostname || "");
+  } catch (e) { return false; }
+}
+function proxiedMedia(url) {
+  if (!url || !hostedProxy()) return url;
+  if (/^https?:\/\//i.test(url) && url.indexOf(location.origin) !== 0) {
+    return location.origin + "/stream?url=" + encodeURIComponent(url);
+  }
+  return url;
+}
 function streamUrl(kind, id, ext, direct) {
-  if (direct) return direct;
+  if (direct) return proxiedMedia(direct);
   const folder = kind === "live" ? "live" : kind === "movie" ? "movie" : "series";
   const e = String(ext || (kind === "live" ? "m3u8" : "mp4")).replace(".", "");
-  return state.server + "/" + folder + "/" + encodeURIComponent(state.username) + "/" + encodeURIComponent(state.password) + "/" + id + "." + e;
+  const url = state.server + "/" + folder + "/" + encodeURIComponent(state.username) + "/" + encodeURIComponent(state.password) + "/" + id + "." + e;
+  return proxiedMedia(url);
 }
 function keyOf(section, it) { return section + ":" + (it.stream_id || it.series_id || it.url || it.name); }
 function isFav(k) { return state.favorites.indexOf(k) !== -1; }
@@ -191,7 +205,15 @@ function yearOf(it) { const raw = it.releaseDate || it.releasedate || it.year ||
 function ratingNum(it) { const a = parseFloat(it.rating_5based); if (!isNaN(a) && a > 0) return a; const b = parseFloat(it.rating); if (!isNaN(b) && b > 0) return b > 5 ? b / 2 : b; return 0; }
 function ratingText(it) { const n = ratingNum(it); return n ? (n.toFixed(1) + " / 5") : "بدون تقييم"; }
 function stars(n) { const full = Math.round(n); return "★★★★★".slice(0, Math.max(0, Math.min(5, full))) + "☆☆☆☆☆".slice(0, 5 - Math.max(0, Math.min(5, full))); }
-function posterOf(it) { return it.stream_icon || it.cover || it.logo || ""; }
+function posterOf(it) {
+  let u = it.stream_icon || it.cover || it.logo || "";
+  if (!u) return "";
+  u = String(u).trim();
+  if (typeof location !== "undefined" && location.protocol === "https:" && /^http:\/\//i.test(u)) {
+    return "https://images.weserv.nl/?url=" + encodeURIComponent(u) + "&w=360&output=jpg";
+  }
+  return u;
+}
 
 function setMode(mode) {
   state.mode = mode;
@@ -646,6 +668,7 @@ function play(title, url, liveNav, media) {
   $("#tb-rew30").style.display = liveNav ? "none" : "";
   $("#tb-fwd30").style.display = liveNav ? "none" : "";
   $("#seek-wrap").style.display = liveNav ? "none" : "flex";
+  url = proxiedMedia(url);
   state.currentUrl = url;
   state.subIndex = -1;
   $("#tb-cc").classList.remove("on");

@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: michel
+    runtime: python
+    plan: free
+    buildCommand: ""
+    startCommand: python3 server.py
