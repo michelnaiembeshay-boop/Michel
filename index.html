@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Michel" />
@@ -11,11 +11,26 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <section id="login-screen">
+  <section id="license-screen">
+    <form class="login-card" id="license-form">
+      <div class="brand">
+        <div class="brand-badge">M</div>
+        <h1>Michel</h1>
+        <p class="ltr" dir="ltr">01223531334</p>
+        <p>أدخل كود التشغيل</p>
+      </div>
+      <label>الكود</label>
+      <input class="field ltr" id="license-code" placeholder="كود ميشيل" dir="ltr" autocomplete="off" />
+      <button class="btn btn-gold" id="license-btn" type="submit">دخول</button>
+      <div id="license-error" class="error hidden"></div>
+    </form>
+  </section>
+  <section id="login-screen" class="hidden">
     <form class="login-card" id="login-form">
       <div class="brand">
         <div class="brand-badge">M</div>
         <h1>Michel</h1>
+        <p class="ltr" dir="ltr">01223531334</p>
         <p>Xtream أو قائمة M3U</p>
       </div>
       <div class="mode-tabs">
@@ -46,18 +61,31 @@
       <button class="back-btn" id="back-btn" type="button">رجوع</button>
       <div class="top-title">
         <h2 id="page-title">الرئيسية</h2>
+        <p class="ltr" dir="ltr">01223531334</p>
         <p id="page-sub"></p>
       </div>
       <div class="search hidden" id="search-wrap">
         <input class="field" id="search" placeholder="بحث..." />
       </div>
+      <button class="icon-btn" id="cast-btn" type="button">كاست</button>
       <button class="icon-btn" id="logout-btn" type="button">خروج</button>
     </header>
     <main class="page" id="page"></main>
   </section>
 
+  <div id="adult-lock" class="sheet hidden">
+    <div class="login-card" style="margin:auto">
+      <h2>محتوى للكبار</h2>
+      <p class="muted">اكتب الرقم السري</p>
+      <input class="field ltr" id="adult-pin" placeholder="0000" dir="ltr" inputmode="numeric" />
+      <button class="btn btn-gold" id="adult-ok" type="button">فتح</button>
+      <button class="btn ghost" id="adult-cancel" type="button">رجوع</button>
+      <div id="adult-err" class="error hidden"></div>
+    </div>
+  </div>
   <div id="player-modal" class="hidden">
     <video id="video" autoplay playsinline webkit-playsinline x-webkit-airplay="allow"></video>
+    <div id="sub-overlay"></div>
     <div id="toolbar" class="toolbar hidden">
       <div class="tb-row">
         <button class="back-btn" id="tb-back" type="button">رجوع</button>
@@ -71,6 +99,7 @@
         <button class="icon-btn" id="tb-next" type="button">التالي</button>
         <button class="icon-btn" id="tb-list" type="button">القائمة</button>
         <button class="icon-btn" id="tb-cc" type="button"><span id="tb-cc-lab">ترجمة</span></button>
+        <button class="icon-btn" id="tb-vlc" type="button">كاست</button>
       </div>
       <div class="seek-row" id="seek-wrap">
         <span id="tcur">00:00</span>
@@ -99,6 +128,7 @@
       <div id="sheet-body"></div>
     </div>
   </div>
+  <script src="hls.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

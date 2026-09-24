@@ -1,14 +1,18 @@
 :root{--bg:#08090d;--bg2:#10131b;--card:#171b26;--line:#2a3142;--text:#f4f6fa;--muted:#939bb0;--gold:#e8b44c}
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
+html,body{height:100%;width:100%;margin:0;background:#000}
 body{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
 .hidden{display:none!important}
 button,input{font-family:inherit}
-#login-screen{min-height:100%;display:grid;place-items:center;padding:20px}
+#license-screen,#login-screen{min-height:100%;display:grid;place-items:center;padding:20px}
+#sub-overlay{position:absolute;left:6%;right:6%;bottom:86px;z-index:55;text-align:center;font-size:clamp(16px,3.2vw,28px);font-weight:700;line-height:1.45;color:#fff;text-shadow:0 2px 8px #000,0 0 4px #000;pointer-events:none;white-space:pre-line}
+#player-modal{position:fixed;inset:0;background:#000;z-index:50}
 .login-card{width:min(440px,100%);background:#12151e;border:1px solid var(--line);border-radius:22px;padding:28px 22px}
 .brand{text-align:center;margin-bottom:16px}
 .brand-badge{width:64px;height:64px;margin:0 auto 12px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(135deg,#f0c35a,#c4891a);color:#1a1204;font-weight:800;font-size:28px}
 .brand p{color:var(--muted);margin-top:6px;font-size:13px}
+.brand .ltr{color:var(--gold);font-size:20px;font-weight:800;letter-spacing:1px;margin:8px 0}
+.top-title .ltr,.hello .ltr{color:var(--gold);font-size:16px;font-weight:800;letter-spacing:.6px}
 .mode-tabs{display:flex;gap:8px;margin-bottom:8px}
 .mode{flex:1;border:1px solid var(--line);background:#1b2130;color:var(--text);border-radius:12px;padding:10px;font-weight:700;cursor:pointer}
 .mode.on{background:linear-gradient(135deg,#f0c35a,#c4891a);color:#1a1204;border-color:#e8b44c}
@@ -58,10 +62,10 @@ label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}
 .vod p{color:var(--muted);font-size:12px;margin-top:4px}
 .empty,.loading{color:var(--muted);text-align:center;padding:50px 16px}
 #player-modal{position:fixed;inset:0;background:#000;z-index:50}
-#player-modal video{width:100%;height:100%;background:#000;object-fit:contain}
-.toolbar{position:absolute;left:0;right:0;bottom:0;padding:10px 12px 14px;background:linear-gradient(transparent,rgba(0,0,0,.9));z-index:60}
+#player-modal video{width:100%;height:100%;background:#000;object-fit:contain;object-position:center}
+.toolbar{position:absolute;left:0;right:0;bottom:0;padding:10px 12px 22px;background:linear-gradient(transparent,rgba(0,0,0,.92));z-index:80;pointer-events:auto}
 .tb-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.toolbar h2{flex:1;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:70px}
+.toolbar h2,.player-head h2{display:none}
 .toolbar .icon-btn,.toolbar .back-btn{height:40px}
 .seek-row{display:flex;align-items:center;gap:8px;margin-top:8px}
 .seek-row span{font-size:12px;color:#ddd;min-width:42px}
@@ -86,3 +90,30 @@ video::cue{background:rgba(0,0,0,.55);color:#fff;font-size:18px}
 .chip{background:#1b2130;border:1px solid var(--line);color:var(--text);border-radius:999px;padding:6px 12px;cursor:pointer}
 .chip.active{background:var(--gold);color:#1a1204;border-color:var(--gold)}
 .episode{width:100%;text-align:right;background:#171b26;border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
+body.tv .home-tile,body.tv .pkg,body.tv .ch,body.tv .vod,body.tv .episode,body.tv .chip,body.tv .btn,body.tv .back-btn,body.tv .icon-btn,body.tv .mode,body.tv .pcat,body.tv .pch{
+  outline:none
+}
+body.tv .home-tile:focus,body.tv .pkg:focus,body.tv .ch:focus,body.tv .vod:focus,body.tv .episode:focus,body.tv .chip:focus,body.tv .btn:focus,body.tv .back-btn:focus,body.tv .icon-btn:focus,body.tv .mode:focus,body.tv .pcat:focus,body.tv .pch:focus,body.tv .field:focus{
+  outline:3px solid var(--gold);
+  box-shadow:0 0 0 4px rgba(232,180,76,.28);
+  transform:scale(1.03);
+  z-index:2
+}
+body.tv .topbar{padding:12px 16px}
+body.tv .back-btn,body.tv .icon-btn{min-height:56px;min-width:56px;font-size:18px;padding:0 16px}
+body.tv .home-tile{padding:26px;border-radius:22px}
+body.tv .home-tile .ic{width:72px;height:72px;font-size:30px}
+body.tv .home-tile h3{font-size:26px}
+body.tv .pkg{padding:22px 20px;min-height:72px}
+body.tv .pkg h3{font-size:22px}
+body.tv .ch{min-height:76px;padding:12px 14px}
+body.tv .ch h3{font-size:20px}
+body.tv .vod-grid{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+body.tv .vod h3{font-size:16px}
+body.tv .toolbar{padding:16px 18px 28px}
+body.tv .toolbar .icon-btn,body.tv .toolbar .back-btn{height:58px;font-size:18px}
+body.tv .page{padding:18px}
+body.tv .hello h3{font-size:28px}
+body.tv .pcat,body.tv .pch{padding:18px;font-size:18px}
+body.tv .episode{padding:16px;font-size:18px;min-height:58px}
+body.tv #tb-vlc{display:inline-flex;min-width:88px}
